@@ -1,0 +1,6 @@
+@Resturang_luna_HostAddress = http://localhost:5181
+
+GET {{Resturang_luna_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
