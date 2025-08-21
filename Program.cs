@@ -12,14 +12,14 @@ namespace Resturang_luna
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            var hasher = new PasswordHasher();
-            var hash = hasher.Hash("test123");
-            Console.WriteLine(hash);
+    //        var hasher = new PasswordHasher();
+    //        var hash = hasher.Hash("test123");
+    //        Console.WriteLine(hash);
 
-            bool ok = hasher.Verify(
-    "G/ZurCUC4QMRDqXwZwQRsA==;ULAG2GRXijaJasIKRhSJUTZtZQGTsAm3UTjPE7xsEBY=",
-    "test123");
-            Console.WriteLine(ok); 
+    //        bool ok = hasher.Verify(
+    //"G/ZurCUC4QMRDqXwZwQRsA==;ULAG2GRXijaJasIKRhSJUTZtZQGTsAm3UTjPE7xsEBY=",
+    //"test123");
+    //        Console.WriteLine(ok); 
 
 
             // Add services to the container.
