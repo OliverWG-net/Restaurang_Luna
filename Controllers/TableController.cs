@@ -56,15 +56,28 @@ namespace Restaurang_luna.Controllers
         }
 
         // PUT api/<TableController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        [HttpPatch("{id}")]
+        public async Task<ActionResult<TableDto>> Patch(int id, [FromBody] TablePatchDto dto, CancellationToken ct)
         {
+            var updatedTable = await _tableService.PatchTable(id, dto, ct);
+            if (updatedTable == null)
+            {
+                return NotFound("Table was not able to be updated");
+            }
+
+                return Ok(updatedTable);
         }
 
         // DELETE api/<TableController>/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public async Task<ActionResult<bool>> Delete(int id, CancellationToken ct)
         {
+            var success = await _tableService.DeleteTable(id, ct);
+            if (success == false)
+
+                return NotFound("Table not found");
+
+            return Ok(success);
         }
     }
 }

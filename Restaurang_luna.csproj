@@ -35,8 +35,6 @@
   <ItemGroup>
     <Folder Include="DTOs\Booking\Response\" />
     <Folder Include="DTOs\Booking\Request\" />
-    <Folder Include="DTOs\customer\Response\" />
-    <Folder Include="DTOs\customer\Request\" />
   </ItemGroup>
 
 </Project>

@@ -46,7 +46,7 @@ namespace Restaurang_luna.ServiceInterface.Resturant
             return tableDto;
         }
 
-        public async Task<TableDto> CreteTable(TableDto dto, CancellationToken ct)
+        public async Task<TableDto> CreateTable(TableDto dto, CancellationToken ct)
         {
             var existingTable = await _context.Tables
                 .FirstOrDefaultAsync(t => t.TableNr == dto.TableNr, ct);
@@ -68,6 +68,41 @@ namespace Restaurang_luna.ServiceInterface.Resturant
                 TableNr = table.TableNr,
                 Capacity = table.Capacity
             };
+        }
+        public async Task<TableDto> PatchTable(int id, TablePatchDto dto, CancellationToken ct)
+        {
+            var table = await _context.Tables
+                .FirstOrDefaultAsync(t => t.TableId == id, ct);
+            if (table == null)
+                return null;
+
+            if (dto.TableNr is not null)
+                table.TableNr = dto.TableNr;
+
+            if (dto.Capacity.HasValue)
+                table.Capacity = dto.Capacity.Value;
+
+            await _context.SaveChangesAsync(ct);
+
+            return new TableDto
+            {
+                TableNr = table.TableNr,
+                Capacity = table.Capacity
+            };
+        }
+        public async Task<bool> DeleteTable(int id, CancellationToken ct)
+        {
+            var table = await _context.Tables
+                .FirstOrDefaultAsync(t => t.TableId == id, ct);
+
+            if (table == null)
+            {
+                return false;
+            }
+
+            _context.Tables.Remove(table);
+            await _context.SaveChangesAsync(ct);
+            return true;
         }
     }
 }

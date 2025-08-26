@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Restaurang_luna.Extensions;
 using Restaurang_luna.ServiceInterface.Auth;
+using Restaurang_luna.ServiceInterface.Customer;
 using Restaurang_luna.ServiceInterface.Resturant;
 using Resturang_luna.Data;
 using Resturang_luna.ServiceInterface.Auth;
@@ -53,6 +54,7 @@ namespace Resturang_luna
             builder.Services.AddScoped<IAuthService, AuthService>();
             builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
             builder.Services.AddScoped<ITableService, TableService>();
+            builder.Services.AddScoped<ICustomerService, CustomerService>();
             builder.Services.AddHttpContextAccessor();
 
             var app = builder.Build();
