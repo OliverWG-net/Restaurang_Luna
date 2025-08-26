@@ -1,8 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Identity.Client;
-using Resturang_luna.Models;
+using Restaurang_luna.Models;
 
-namespace Resturang_luna.Data
+namespace Restaurang_luna.Data
 {
     public class LunaDbContext : DbContext
     {
@@ -43,13 +42,13 @@ namespace Resturang_luna.Data
 
             modelBuilder.Entity<Menu>().HasData(
             new Menu
-                {
-                    MenuId = 1,
-                    MenuItem = "Spaghetti Carbonara",
-                    Price = 120,
-                    Description = "Classic pasta with creamy egg sauce, pancetta, and parmesan.",
-                    IsPopular = true,
-                    PicutreUrl = "https://vasterbottensost.com/wp-content/uploads/2025/03/carbonara.jpg"
+            {
+                MenuId = 1,
+                MenuItem = "Spaghetti Carbonara",
+                Price = 120,
+                Description = "Classic pasta with creamy egg sauce, pancetta, and parmesan.",
+                IsPopular = true,
+                PicutreUrl = "https://vasterbottensost.com/wp-content/uploads/2025/03/carbonara.jpg"
             },
                 new Menu
                 {
@@ -128,13 +127,13 @@ namespace Resturang_luna.Data
 
             modelBuilder.Entity<Customer>().HasData(
         new Customer
-               {
-                   CustomerId = Guid.Parse("b5b55e03-2d42-4b64-9a1d-3a4fd0a9e6a1"),
-                   FirstName = "Alice",
-                   LastName = "Johansson",
-                   PhoneNumber = "+46701234567",
-                   Email = "alice@example.com"
-               },
+        {
+            CustomerId = Guid.Parse("b5b55e03-2d42-4b64-9a1d-3a4fd0a9e6a1"),
+            FirstName = "Alice",
+            LastName = "Johansson",
+            PhoneNumber = "+46701234567",
+            Email = "alice@example.com"
+        },
                new Customer
                {
                    CustomerId = Guid.Parse("a1c7d3a6-8b10-4a1f-90a4-7f2f0d9b1234"),

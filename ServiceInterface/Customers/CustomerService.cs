@@ -1,11 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Restaurang_luna.DTOs.Customer;
-using Resturang_luna.Data;
-using Resturang_luna.Models;
-using System.Reflection.Metadata.Ecma335;
+using Restaurang_luna.Data;
+using Restaurang_luna.Models;
+using Restaurang_luna.Extensions;
 
 
-namespace Restaurang_luna.ServiceInterface.Customer
+namespace Restaurang_luna.ServiceInterface.Customers
 {
     public class CustomerService : ICustomerService
     {
@@ -13,7 +13,7 @@ namespace Restaurang_luna.ServiceInterface.Customer
 
         public CustomerService(LunaDbContext context)
         {
-            _context = context;          
+            _context = context;
         }
         public async Task<List<CustomerDto>> GetCustomers(CancellationToken ct)
         {
@@ -64,7 +64,7 @@ namespace Restaurang_luna.ServiceInterface.Customer
             if (existingCustomer)
                 return null;
 
-            var customer = new Resturang_luna.Models.Customer
+            var customer = new Customer
             {
                 CustomerId = Guid.NewGuid(),
                 FirstName = dto.FirstName,
@@ -92,33 +92,30 @@ namespace Restaurang_luna.ServiceInterface.Customer
         {
             var customer = await _context.Customers
                 .FirstOrDefaultAsync(c => c.CustomerId == id, ct);
+
             if (customer is null)
                 return null;
 
-            var changedFields = new Dictionary<string, object>();
+            var changedFields = customer.PatchFrom(dto);
 
-            var dtoProp = typeof(PatchCustomerDto).GetProperties();
-            var entityProp = typeof(Resturang_luna.Models.Customer).GetProperties();
-
-            foreach (var prop in dtoProp)
-            {
-                var value = prop.GetValue(dto);
-
-                if (value != null)
-                {
-                    var matchingProp = entityProp.FirstOrDefault(p => p.Name == prop.Name);
-
-                    if (matchingProp != null && matchingProp.CanWrite)
-                    {
-                        matchingProp.SetValue(customer, value);
-                        changedFields[prop.Name] = value;
-                    }
-                }
-            }
-
-            await _context.SaveChangesAsync(ct);
+            if (changedFields.Count > 0)
+                await _context.SaveChangesAsync(ct);
 
             return changedFields;
+        }
+        public async Task<bool> DeleteCustomer(Guid id, CancellationToken ct)
+        {
+            var customer = await _context.Customers
+                .FirstOrDefaultAsync(t => t.CustomerId == id, ct);
+
+            if (customer == null)
+            {
+                return false;
+            }
+
+            _context.Customers.Remove(customer);
+            await _context.SaveChangesAsync(ct);
+            return true;
         }
     }
 }

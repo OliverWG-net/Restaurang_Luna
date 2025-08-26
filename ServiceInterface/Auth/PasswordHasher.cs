@@ -1,6 +1,6 @@
 ﻿using System.Security.Cryptography;
 
-namespace Resturang_luna.ServiceInterface.Auth
+namespace Restaurang_luna.ServiceInterface.Auth
 {
     public class PasswordHasher : IPasswordHasher
     {
@@ -19,7 +19,7 @@ namespace Resturang_luna.ServiceInterface.Auth
 
         }
 
-        public bool Verify (string inputPassword, string passwordHash)
+        public bool Verify(string inputPassword, string passwordHash)
         {
             if (string.IsNullOrWhiteSpace(passwordHash)) return false;
 

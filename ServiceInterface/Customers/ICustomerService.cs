@@ -1,7 +1,6 @@
 ﻿using Restaurang_luna.DTOs.Customer;
-using Restaurang_luna.DTOs.Table;
 
-namespace Restaurang_luna.ServiceInterface.Customer
+namespace Restaurang_luna.ServiceInterface.Customers
 {
     public interface ICustomerService
     {
@@ -9,6 +8,6 @@ namespace Restaurang_luna.ServiceInterface.Customer
         Task<CustomerDto> GetCusstomer(Guid Id, CancellationToken ct);
         Task<CustomerDto> CreateCustomer(CustomerDto dto, CancellationToken ct);
         Task<Dictionary<string, object>> PatchCustomer(Guid id, PatchCustomerDto dto, CancellationToken ct);
-        //Task<bool> DeleteCustomer(int id, CancellationToken ct);
+        Task<bool> DeleteCustomer(Guid id, CancellationToken ct);
     }
 }

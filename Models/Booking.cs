@@ -2,9 +2,9 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Resturang_luna.Models
+namespace Restaurang_luna.Models
 {
-    public enum BookingStatus { Confirmed, CheckedIn, Completed, NoShow, Cancelled}
+    public enum BookingStatus { Confirmed, CheckedIn, Completed, NoShow, Cancelled }
 
     [Index(nameof(StartAt))]
     [Index(nameof(Status), nameof(StartAt))]
@@ -71,7 +71,7 @@ namespace Resturang_luna.Models
             SnapshotNotes = notes;
         }
         //checks in customer
-        public void CheckIn (DateTimeOffset now)
+        public void CheckIn(DateTimeOffset now)
         {
             if (Status is BookingStatus.Confirmed or BookingStatus.NoShow)
             {
@@ -101,7 +101,7 @@ namespace Resturang_luna.Models
             {
                 Status = BookingStatus.Cancelled;
                 CancelledAt = now;
-                    
+
             }
         }
 

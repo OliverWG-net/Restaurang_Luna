@@ -1,8 +1,8 @@
-﻿using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Restaurang_luna.DTOs.Table;
-using Resturang_luna.Data;
-using Resturang_luna.Models;
+using Restaurang_luna.Data;
+using Restaurang_luna.Models;
+using Restaurang_luna.Extensions;
 
 namespace Restaurang_luna.ServiceInterface.Resturant
 {
@@ -26,7 +26,7 @@ namespace Restaurang_luna.ServiceInterface.Resturant
                 TableNr = t.TableNr,
                 Capacity = t.Capacity
             }).ToList();
-                
+
             return (tablesDto);
         }
 
@@ -69,26 +69,22 @@ namespace Restaurang_luna.ServiceInterface.Resturant
                 Capacity = table.Capacity
             };
         }
-        public async Task<TableDto> PatchTable(int id, TablePatchDto dto, CancellationToken ct)
+        public async Task<Dictionary<string, object>> PatchTable(int id, TablePatchDto dto, CancellationToken ct)
         {
             var table = await _context.Tables
                 .FirstOrDefaultAsync(t => t.TableId == id, ct);
+
             if (table == null)
                 return null;
 
-            if (dto.TableNr is not null)
-                table.TableNr = dto.TableNr;
+            var changedFields = _context.PatchFrom(dto);
 
-            if (dto.Capacity.HasValue)
-                table.Capacity = dto.Capacity.Value;
+            if (changedFields.Count > 0)
+                await _context.SaveChangesAsync(ct);
 
-            await _context.SaveChangesAsync(ct);
+            return (changedFields);
 
-            return new TableDto
-            {
-                TableNr = table.TableNr,
-                Capacity = table.Capacity
-            };
+
         }
         public async Task<bool> DeleteTable(int id, CancellationToken ct)
         {

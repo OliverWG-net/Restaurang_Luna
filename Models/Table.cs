@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.ComponentModel.DataAnnotations;
 
-namespace Resturang_luna.Models
+namespace Restaurang_luna.Models
 {
     [Index(nameof(TableNr))]
     public class Table

@@ -1,4 +1,4 @@
-﻿namespace Resturang_luna.ServiceInterface.Auth
+﻿namespace Restaurang_luna.ServiceInterface.Auth
 {
     public interface IPasswordHasher
     {

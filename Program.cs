@@ -1,17 +1,11 @@
-
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.IdentityModel.Tokens;
 using Restaurang_luna.Extensions;
 using Restaurang_luna.ServiceInterface.Auth;
-using Restaurang_luna.ServiceInterface.Customer;
+using Restaurang_luna.ServiceInterface.Customers;
 using Restaurang_luna.ServiceInterface.Resturant;
-using Resturang_luna.Data;
-using Resturang_luna.ServiceInterface.Auth;
+using Restaurang_luna.Data;
 
-namespace Resturang_luna
+namespace Restaurang_luna
 {
     public class Program
     {
@@ -19,14 +13,14 @@ namespace Resturang_luna
         {
             var builder = WebApplication.CreateBuilder(args);
 
-    //        var hasher = new PasswordHasher();
-    //        var hash = hasher.Hash("test123");
-    //        Console.WriteLine(hash);
+            //        var hasher = new PasswordHasher();
+            //        var hash = hasher.Hash("test123");
+            //        Console.WriteLine(hash);
 
-    //        bool ok = hasher.Verify(
-    //"G/ZurCUC4QMRDqXwZwQRsA==;ULAG2GRXijaJasIKRhSJUTZtZQGTsAm3UTjPE7xsEBY=",
-    //"test123");
-    //        Console.WriteLine(ok);
+            //        bool ok = hasher.Verify(
+            //"G/ZurCUC4QMRDqXwZwQRsA==;ULAG2GRXijaJasIKRhSJUTZtZQGTsAm3UTjPE7xsEBY=",
+            //"test123");
+            //        Console.WriteLine(ok);
 
 
             // Add services to the container.
@@ -41,7 +35,7 @@ namespace Resturang_luna
             Console.WriteLine($"Issuer: {cfg["JwtConfig:Issuer"]}");
             Console.WriteLine($"Audience: {cfg["JwtConfig:Audience"]}");
             builder.Services.AddJwtAuthentication(builder.Configuration);
-            
+
 
             builder.Services.AddAuthorization();
 

@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 
-namespace Resturang_luna.Models
+namespace Restaurang_luna.Models
 {
     [Index(nameof(MenuItem))]
     public class Menu

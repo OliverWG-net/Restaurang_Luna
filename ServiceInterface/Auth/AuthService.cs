@@ -1,15 +1,13 @@
-﻿using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Restaurang_luna.DTOs.Admin.Request;
 using Restaurang_luna.DTOs.Admin.Response;
-using Resturang_luna.Data;
-using Resturang_luna.ServiceInterface.Auth;
+using Restaurang_luna.Data;
+using Restaurang_luna.ServiceInterface.Auth;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Authentication;
 using System.Security.Claims;
 using System.Text;
-using static System.Net.WebRequestMethods;
 
 namespace Restaurang_luna.ServiceInterface.Auth
 {
@@ -70,7 +68,7 @@ namespace Restaurang_luna.ServiceInterface.Auth
             var cookieOptions = new CookieOptions
             {
                 HttpOnly = true,
-                Secure = true, 
+                Secure = true,
                 SameSite = SameSiteMode.Lax,
                 Expires = DateTimeOffset.UtcNow.AddMinutes(30)
             };

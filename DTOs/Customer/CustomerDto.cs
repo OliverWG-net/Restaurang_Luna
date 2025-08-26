@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace Restaurang_luna.DTOs.Customer
+﻿namespace Restaurang_luna.DTOs.Customer
 {
     public class CustomerDto
     {

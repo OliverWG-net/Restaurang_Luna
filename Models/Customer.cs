@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 
-namespace Resturang_luna.Models
+namespace Restaurang_luna.Models
 {
     [Index(nameof(PhoneNumber))]
     public class Customer
@@ -23,7 +23,7 @@ namespace Resturang_luna.Models
         [EmailAddress]
         public string? Email { get; set; }
 
-        public string? Notes { get; set;  }
+        public string? Notes { get; set; }
 
         public int NoShowCount { get; set; }
 

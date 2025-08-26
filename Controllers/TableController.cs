@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Restaurang_luna.DTOs.Table;
 using Restaurang_luna.ServiceInterface.Resturant;
 
@@ -50,14 +49,13 @@ namespace Restaurang_luna.Controllers
             var newTable = await _tableService.CreateTable(dto, ct);
 
             if (newTable == null)
-                 return BadRequest("Could not create a new table, table already exist");
+                return BadRequest("Could not create a new table, table already exist");
 
             return Ok($"A new table with table nr:{newTable.TableNr} with capcity of {newTable.Capacity}!");
         }
 
-        // PUT api/<TableController>/5
         [HttpPatch("{id}")]
-        public async Task<ActionResult<TableDto>> Patch(int id, [FromBody] TablePatchDto dto, CancellationToken ct)
+        public async Task<ActionResult<Dictionary<string, object>>> Patch(int id, [FromBody] TablePatchDto dto, CancellationToken ct)
         {
             var updatedTable = await _tableService.PatchTable(id, dto, ct);
             if (updatedTable == null)
@@ -65,7 +63,7 @@ namespace Restaurang_luna.Controllers
                 return NotFound("Table was not able to be updated");
             }
 
-                return Ok(updatedTable);
+            return Ok(updatedTable);
         }
 
         // DELETE api/<TableController>/5
