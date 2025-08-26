@@ -1,6 +1,12 @@
 
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
+using Restaurang_luna.Extensions;
+using Restaurang_luna.ServiceInterface.Auth;
+using Restaurang_luna.ServiceInterface.Resturant;
 using Resturang_luna.Data;
 using Resturang_luna.ServiceInterface.Auth;
 
@@ -19,7 +25,7 @@ namespace Resturang_luna
     //        bool ok = hasher.Verify(
     //"G/ZurCUC4QMRDqXwZwQRsA==;ULAG2GRXijaJasIKRhSJUTZtZQGTsAm3UTjPE7xsEBY=",
     //"test123");
-    //        Console.WriteLine(ok); 
+    //        Console.WriteLine(ok);
 
 
             // Add services to the container.
@@ -28,11 +34,26 @@ namespace Resturang_luna
             {
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
             });
+            var cfg = builder.Configuration;
+            Console.WriteLine($"ENV: {builder.Environment.EnvironmentName}");
+            Console.WriteLine($"Has JwtConfig:Key? {(!string.IsNullOrWhiteSpace(cfg["JwtConfig:Key"]))}");
+            Console.WriteLine($"Issuer: {cfg["JwtConfig:Issuer"]}");
+            Console.WriteLine($"Audience: {cfg["JwtConfig:Audience"]}");
+            builder.Services.AddJwtAuthentication(builder.Configuration);
+            
+
+            builder.Services.AddAuthorization();
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
+            //Setting scrope for service/interface
+            builder.Services.AddScoped<IAuthService, AuthService>();
+            builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
+            builder.Services.AddScoped<ITableService, TableService>();
+            builder.Services.AddHttpContextAccessor();
 
             var app = builder.Build();
 
@@ -45,6 +66,7 @@ namespace Resturang_luna
 
             app.UseHttpsRedirection();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
 

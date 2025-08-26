@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Resturang_luna.Models
 {
-    [Index(nameof(UserName))]
+    [Index(nameof(UserName), IsUnique = true)]
     public class Admin
     {
         [Key]

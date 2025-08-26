@@ -10,7 +10,7 @@ namespace Resturang_luna.Models
         [Key]
         public int TableId { get; set; }
 
-        public int TableNr { get; set; }
+        public string TableNr { get; set; } = "";
 
         [Range(1, 8)]
         public int Capacity { get; set; }

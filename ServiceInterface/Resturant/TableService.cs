@@ -1,0 +1,73 @@
+﻿using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.EntityFrameworkCore;
+using Restaurang_luna.DTOs.Table;
+using Resturang_luna.Data;
+using Resturang_luna.Models;
+
+namespace Restaurang_luna.ServiceInterface.Resturant
+{
+    public class TableService : ITableService
+    {
+        private readonly LunaDbContext _context;
+
+        public TableService(LunaDbContext context)
+        {
+            _context = context;
+        }
+        public async Task<List<TableDto>> GetTables(CancellationToken ct)
+        {
+            var tables = await _context.Tables
+                .ToListAsync(ct);
+            if (tables == null)
+                return null;
+
+            var tablesDto = tables.Select(t => new TableDto
+            {
+                TableNr = t.TableNr,
+                Capacity = t.Capacity
+            }).ToList();
+                
+            return (tablesDto);
+        }
+
+        public async Task<TableDto> GetTable(int id, CancellationToken ct)
+        {
+            var table = await _context.Tables
+                .FirstOrDefaultAsync(t => id == t.TableId, ct);
+            if (table == null)
+                return null;
+
+            var tableDto = new TableDto
+            {
+                TableNr = table.TableNr,
+                Capacity = table.Capacity
+            };
+
+            return tableDto;
+        }
+
+        public async Task<TableDto> CreteTable(TableDto dto, CancellationToken ct)
+        {
+            var existingTable = await _context.Tables
+                .FirstOrDefaultAsync(t => t.TableNr == dto.TableNr, ct);
+
+            if (existingTable != null)
+                return null;
+
+            var table = new Table
+            {
+                TableNr = dto.TableNr,
+                Capacity = dto.Capacity
+            };
+
+            _context.Tables.Add(table);
+            await _context.SaveChangesAsync(ct);
+
+            return new TableDto
+            {
+                TableNr = table.TableNr,
+                Capacity = table.Capacity
+            };
+        }
+    }
+}

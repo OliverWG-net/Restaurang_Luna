@@ -7,6 +7,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="DTOs\Request\**" />
+    <Compile Remove="DTOs\Response\**" />
+    <Content Remove="DTOs\Request\**" />
+    <Content Remove="DTOs\Response\**" />
+    <EmbeddedResource Remove="DTOs\Request\**" />
+    <EmbeddedResource Remove="DTOs\Response\**" />
+    <None Remove="DTOs\Request\**" />
+    <None Remove="DTOs\Response\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.19" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.8" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.8">
       <PrivateAssets>all</PrivateAssets>
@@ -21,10 +33,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
-    <Folder Include="DTOs\Request\" />
-    <Folder Include="DTOs\Response\" />
-    <Folder Include="ServiceInterface\Resturant\" />
+    <Folder Include="DTOs\Booking\Response\" />
+    <Folder Include="DTOs\Booking\Request\" />
+    <Folder Include="DTOs\customer\Response\" />
+    <Folder Include="DTOs\customer\Request\" />
   </ItemGroup>
 
 </Project>

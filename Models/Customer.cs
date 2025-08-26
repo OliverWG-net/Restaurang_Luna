@@ -17,10 +17,17 @@ namespace Resturang_luna.Models
 
         [Phone]
         [Required]
-        [MaxLength(20)]
+        [MaxLength(32)]
         public string PhoneNumber { get; set; }
 
-        public ICollection<Booking>? Booking { get; set; }
+        [EmailAddress]
+        public string? Email { get; set; }
+
+        public string? Notes { get; set;  }
+
+        public int NoShowCount { get; set; }
+
+        public ICollection<Booking> Booking { get; set; } = new List<Booking>();
 
     }
 }

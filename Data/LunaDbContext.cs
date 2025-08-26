@@ -29,12 +29,16 @@ namespace Resturang_luna.Data
                 }
             );
 
+            modelBuilder.Entity<Booking>()
+            .Property(b => b.RowVersion)
+            .IsRowVersion();
+
             modelBuilder.Entity<Table>().HasData(
-             new Table { TableId = 1, TableNr = 1, Capacity = 2 },
-               new Table { TableId = 2, TableNr = 2, Capacity = 4 },
-               new Table { TableId = 3, TableNr = 3, Capacity = 4 },
-               new Table { TableId = 4, TableNr = 4, Capacity = 6 },
-               new Table { TableId = 5, TableNr = 5, Capacity = 8 }
+             new Table { TableId = 1, TableNr = "T1", Capacity = 2 },
+               new Table { TableId = 2, TableNr = "T2", Capacity = 4 },
+               new Table { TableId = 3, TableNr = "T3", Capacity = 4 },
+               new Table { TableId = 4, TableNr = "T4", Capacity = 6 },
+               new Table { TableId = 5, TableNr = "T5", Capacity = 8 }
               );
 
             modelBuilder.Entity<Menu>().HasData(
@@ -123,56 +127,107 @@ namespace Resturang_luna.Data
 
 
             modelBuilder.Entity<Customer>().HasData(
-                new Customer
-                {
-                    CustomerId = Guid.Parse("b5b55e03-2d42-4b64-9a1d-3a4fd0a9e6a1"),
-                    FirstName = "Alice",
-                    LastName = "Johansson",
-                    PhoneNumber = "+46701234567"
-                },
-                new Customer
-                {
-                    CustomerId = Guid.Parse("a1c7d3a6-8b10-4a1f-90a4-7f2f0d9b1234"),
-                    FirstName = "Bob",
-                    LastName = "Svensson",
-                    PhoneNumber = "+46709876543"
-                },
-                new Customer
-                {
-                    CustomerId = Guid.Parse("c9e2f4b1-7a27-4c9c-8b3b-0b4c8a7f55e2"),
-                    FirstName = "Klara",
-                    LastName = null,
-                    PhoneNumber = "+46855500010"
-                }
-            );
+        new Customer
+               {
+                   CustomerId = Guid.Parse("b5b55e03-2d42-4b64-9a1d-3a4fd0a9e6a1"),
+                   FirstName = "Alice",
+                   LastName = "Johansson",
+                   PhoneNumber = "+46701234567",
+                   Email = "alice@example.com"
+               },
+               new Customer
+               {
+                   CustomerId = Guid.Parse("a1c7d3a6-8b10-4a1f-90a4-7f2f0d9b1234"),
+                   FirstName = "Bob",
+                   LastName = "Svensson",
+                   PhoneNumber = "+46709876543",
+                   Email = "bob@example.com"
+               },
+               new Customer
+               {
+                   CustomerId = Guid.Parse("c9e2f4b1-7a27-4c9c-8b3b-0b4c8a7f55e2"),
+                   FirstName = "Klara",
+                   LastName = null,
+                   PhoneNumber = "+46855500010",
+                   Email = null
+               }
+           );
+
+            var createdAt = new DateTimeOffset(2025, 08, 01, 12, 00, 00, TimeSpan.Zero);
 
 
             modelBuilder.Entity<Booking>().HasData(
-                new Booking
-                {
-                    BookingId = Guid.Parse("d6a6d2f0-1f44-4b77-9b6c-0c9d1a2b3c4d"),
-                    StartAt = new DateTimeOffset(2025, 09, 01, 17, 00, 00, TimeSpan.Zero), 
-                    GuestAmount = 2,
-                    TableId_FK = 1,
-                    CustomerId_FK = Guid.Parse("b5b55e03-2d42-4b64-9a1d-3a4fd0a9e6a1")
-                },
-                new Booking
-                {
-                    BookingId = Guid.Parse("a2b3c4d5-e6f7-4a89-9b01-23456789abcd"),
-                    StartAt = new DateTimeOffset(2025, 09, 02, 18, 30, 00, TimeSpan.Zero), 
-                    GuestAmount = 4,
-                    TableId_FK = 2,
-                    CustomerId_FK = Guid.Parse("a1c7d3a6-8b10-4a1f-90a4-7f2f0d9b1234")
-                },
-                new Booking
-                {
-                    BookingId = Guid.Parse("f1e2d3c4-b5a6-4789-8123-9abcdeff0011"),
-                    StartAt = new DateTimeOffset(2025, 09, 03, 19, 00, 00, TimeSpan.Zero), 
-                    GuestAmount = 6,
-                    TableId_FK = 4,
-                    CustomerId_FK = Guid.Parse("c9e2f4b1-7a27-4c9c-8b3b-0b4c8a7f55e2")
-                }
-            );
+                 new
+                 {
+                     BookingId = Guid.Parse("d6a6d2f0-1f44-4b77-9b6c-0c9d1a2b3c4d"),
+                     StartAt = new DateTimeOffset(2025, 09, 01, 17, 00, 00, TimeSpan.Zero),
+                     Duration = 90,
+                     GuestAmount = 2,
+                     TableId_FK = 1,
+                     CustomerId_FK = Guid.Parse("b5b55e03-2d42-4b64-9a1d-3a4fd0a9e6a1"),
+
+                     // private-set properties
+                     Status = BookingStatus.Confirmed,
+                     SnapshotName = "Alice Johansson",
+                     SnapshotPhone = "+46701234567",
+                     SnapshotEmail = "alice@example.com",
+                     SnapshotNotes = (string?)null,
+                     IsSnapshotLocked = true,
+
+                     CheckedInAt = (DateTimeOffset?)null,
+                     CompletedAt = (DateTimeOffset?)null,
+                     CancelledAt = (DateTimeOffset?)null,
+
+                     CreatedAt = new DateTimeOffset(2025, 08, 01, 12, 00, 00, TimeSpan.Zero),
+                     UpdatedAt = (DateTimeOffset?)null
+                 },
+                 new
+                 {
+                     BookingId = Guid.Parse("a2b3c4d5-e6f7-4a89-9b01-23456789abcd"),
+                     StartAt = new DateTimeOffset(2025, 09, 02, 18, 30, 00, TimeSpan.Zero),
+                     Duration = 90,
+                     GuestAmount = 4,
+                     TableId_FK = 2,
+                     CustomerId_FK = Guid.Parse("a1c7d3a6-8b10-4a1f-90a4-7f2f0d9b1234"),
+
+                     Status = BookingStatus.Confirmed,
+                     SnapshotName = "Bob Svensson",
+                     SnapshotPhone = "+46709876543",
+                     SnapshotEmail = "bob@example.com",
+                     SnapshotNotes = (string?)null,
+                     IsSnapshotLocked = true,
+
+                     CheckedInAt = (DateTimeOffset?)null,
+                     CompletedAt = (DateTimeOffset?)null,
+                     CancelledAt = (DateTimeOffset?)null,
+
+                     CreatedAt = new DateTimeOffset(2025, 08, 01, 12, 00, 00, TimeSpan.Zero),
+                     UpdatedAt = (DateTimeOffset?)null
+                 },
+                 new
+                 {
+                     BookingId = Guid.Parse("f1e2d3c4-b5a6-4789-8123-9abcdeff0011"),
+                     StartAt = new DateTimeOffset(2025, 09, 03, 19, 00, 00, TimeSpan.Zero),
+                     Duration = 90,
+                     GuestAmount = 6,
+                     TableId_FK = 4,
+                     CustomerId_FK = Guid.Parse("c9e2f4b1-7a27-4c9c-8b3b-0b4c8a7f55e2"),
+
+                     Status = BookingStatus.Confirmed,
+                     SnapshotName = "Klara",
+                     SnapshotPhone = "+46855500010",
+                     SnapshotEmail = (string?)null,
+                     SnapshotNotes = (string?)null,
+                     IsSnapshotLocked = true,
+
+                     CheckedInAt = (DateTimeOffset?)null,
+                     CompletedAt = (DateTimeOffset?)null,
+                     CancelledAt = (DateTimeOffset?)null,
+
+                     CreatedAt = new DateTimeOffset(2025, 08, 01, 12, 00, 00, TimeSpan.Zero),
+                     UpdatedAt = (DateTimeOffset?)null
+                 }
+             );
         }
     }
 }

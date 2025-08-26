@@ -19,7 +19,7 @@ namespace Resturang_luna.ServiceInterface.Auth
 
         }
 
-        public bool Verify (string passwordHash, string inputPassword)
+        public bool Verify (string inputPassword, string passwordHash)
         {
             if (string.IsNullOrWhiteSpace(passwordHash)) return false;
 
