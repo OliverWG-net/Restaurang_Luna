@@ -10,6 +10,7 @@ namespace Restaurang_luna.Extensions
         {
             return bucket switch
             {
+                //standard query depending on bucket
                 BookingBucket.Previous => source.Where(b =>
                 (b.StartAt.AddMinutes(b.Duration) <= now) ||
                 b.Status == BookingStatus.Completed ||
@@ -33,6 +34,7 @@ namespace Restaurang_luna.Extensions
         {
             return bucket switch
             {
+                //standard ordering depending on bucket
                 BookingBucket.Previous => source.OrderByDescending(b => b.StartAt),
                 BookingBucket.Current => source.OrderBy(b => b.StartAt),
                 BookingBucket.Future => source.OrderBy(b => b.StartAt),
@@ -44,6 +46,7 @@ namespace Restaurang_luna.Extensions
         {
             return source.Select(b => new BookingListDto
             {
+                //List reuturn view
                 BookingId = b.BookingId,
                 StartAt = b.StartAt,
                 EndAt = b.StartAt.AddMinutes(b.Duration),
