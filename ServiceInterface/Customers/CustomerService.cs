@@ -109,12 +109,11 @@ namespace Restaurang_luna.ServiceInterface.Customers
                 .FirstOrDefaultAsync(t => t.CustomerId == id, ct);
 
             if (customer == null)
-            {
                 return false;
-            }
 
             _context.Customers.Remove(customer);
             await _context.SaveChangesAsync(ct);
+
             return true;
         }
     }

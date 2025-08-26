@@ -23,9 +23,7 @@ namespace Restaurang_luna.Controllers
             var tables = await _tableService.GetTables(ct);
 
             if (tables == null || !tables.Any())
-            {
                 return NotFound("No tables found");
-            }
 
             return Ok(tables);
         }
@@ -59,9 +57,7 @@ namespace Restaurang_luna.Controllers
         {
             var updatedTable = await _tableService.PatchTable(id, dto, ct);
             if (updatedTable == null)
-            {
                 return NotFound("Table was not able to be updated");
-            }
 
             return Ok(updatedTable);
         }
@@ -72,7 +68,6 @@ namespace Restaurang_luna.Controllers
         {
             var success = await _tableService.DeleteTable(id, ct);
             if (success == false)
-
                 return NotFound("Table not found");
 
             return Ok(success);
