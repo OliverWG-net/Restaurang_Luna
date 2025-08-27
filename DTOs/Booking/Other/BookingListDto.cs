@@ -24,9 +24,7 @@ namespace Restaurang_luna.DTOs.Booking.Other
         public string? SnapshotEmail { get; init; }
 
 
-        public bool IsPrevious { get; init; }       
-        public bool IsCurrent { get; init; }        
-        public bool IsFuture { get; init; }
+        public BookingBucket Bucket { get; init; }
 
     }
 }

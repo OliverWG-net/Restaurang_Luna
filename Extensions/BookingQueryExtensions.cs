@@ -27,6 +27,8 @@ namespace Restaurang_luna.Extensions
                 b.StartAt > now &&
                 b.Status != BookingStatus.Cancelled),
 
+                BookingBucket.All => source,
+
                 _ => source
             };
         }
@@ -42,7 +44,7 @@ namespace Restaurang_luna.Extensions
                 _ => source.OrderBy(b => b.StartAt)
             };
         }
-        public static IQueryable<BookingListDto> SelectListDto(this IQueryable<Booking> source, BookingBucket bucket)
+        public static IQueryable<BookingListDto> SelectListDto(this IQueryable<Booking> source, BookingBucket bucket, DateTimeOffset now)
         {
             return source.Select(b => new BookingListDto
             {
@@ -58,9 +60,10 @@ namespace Restaurang_luna.Extensions
                 SnapshotName = b.SnapshotName,
                 SnapshotPhone = b.SnapshotPhone,
                 SnapshotEmail = b.SnapshotEmail,
-                IsPrevious = bucket == BookingBucket.Previous,
-                IsCurrent = bucket == BookingBucket.Current,
-                IsFuture = bucket == BookingBucket.Future
+                Bucket =
+                    (b.EndAt <= now || b.Status == BookingStatus.Completed || b.Status == BookingStatus.Cancelled)
+                        ? BookingBucket.Previous : ((b.Status == BookingStatus.Confirmed || b.Status == BookingStatus.CheckedIn || b.Status == BookingStatus.NoShow)
+                       && b.StartAt <= now && now < b.EndAt) ? BookingBucket.Current : BookingBucket.Future
             });
         }
     }

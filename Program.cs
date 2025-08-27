@@ -47,7 +47,10 @@ namespace Restaurang_luna
             builder.Services.AddControllers()
                 .AddJsonOptions(options =>
                 {
-                    options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+                    options.JsonSerializerOptions.Converters.Add(
+                        new System.Text.Json.Serialization.JsonStringEnumConverter(
+                        System.Text.Json.JsonNamingPolicy.CamelCase,
+                         allowIntegerValues: false));
                 });
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

@@ -20,7 +20,7 @@ namespace Restaurang_luna.ServiceInterface.Resturant
             return await _context.Bookings
                 .WhereBucket(bucket, now)
                 .OrderBucket(bucket)
-                .SelectListDto(bucket)
+                .SelectListDto(bucket, now)
                 .ToListAsync(ct);
         }
     }

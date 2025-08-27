@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Restaurang_luna.Models
 {
     public enum BookingStatus { Confirmed, CheckedIn, Completed, NoShow, Cancelled }
-    public enum BookingBucket { Previous, Current, Future}
+    public enum BookingBucket { Previous, Current, Future, All}
 
     [Index(nameof(StartAt))]
     [Index(nameof(Status), nameof(StartAt))]
