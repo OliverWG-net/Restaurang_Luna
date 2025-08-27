@@ -51,6 +51,9 @@ namespace Restaurang_luna.ServiceInterface.Resturant
             if (dto.GuestAmount <= 0)
                 throw new ArgumentOutOfRangeException(nameof(dto.Duration));
 
+            if (!await IsTableFree(dto.TableId, dto.StartAt, dto.Duration, ct))
+                throw new InvalidOperationException("Table is not avalable at the current time");
+
             var tableExist = await _context.Tables
                 .AnyAsync(t => t.TableId == dto.TableId, ct);
 
