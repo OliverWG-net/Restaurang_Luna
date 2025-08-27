@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Restaurang_luna.DTOs.Booking.Other;
+using Restaurang_luna.DTOs.Booking.Request;
 using Restaurang_luna.Models;
 using Restaurang_luna.ServiceInterface.Resturant;
 
@@ -33,15 +34,29 @@ namespace Restaurang_luna.Controllers
 
         // GET api/<BookingController>/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public async Task<ActionResult<BookingListDto>> GetById(Guid id, CancellationToken ct)
         {
-            return "value";
+            var now = DateTimeOffset.UtcNow;
+
+            var booking = await _bookingService.GetBookingById(id, now, ct);
+
+            if (booking == null)
+                return NotFound("No booking found");
+
+            return booking;
         }
 
         // POST api/<BookingController>
         [HttpPost]
-        public void Post([FromBody] string value)
+        public async Task<ActionResult<BookingListDto>> Create([FromBody] BookingRequestDto dto, CancellationToken ct)
         {
+            var now = DateTimeOffset.UtcNow;
+            var booking = await _bookingService.CreateBooking(dto, now, ct);
+
+            if (booking is null)
+                return BadRequest();
+
+            return CreatedAtAction(nameof(GetById), new { id = booking.BookingId }, booking);
         }
 
         // PUT api/<BookingController>/5
