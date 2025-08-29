@@ -9,6 +9,7 @@ using Restaurang_luna.DTOs.Booking.Other;
 using System.Text.Json;
 using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
+using Microsoft.JSInterop;
 
 namespace Restaurang_luna
 {
@@ -47,10 +48,13 @@ namespace Restaurang_luna
             builder.Services.AddControllers()
                 .AddJsonOptions(options =>
                 {
+                    
                     options.JsonSerializerOptions.Converters.Add(
                         new System.Text.Json.Serialization.JsonStringEnumConverter(
                         System.Text.Json.JsonNamingPolicy.CamelCase,
                          allowIntegerValues: false));
+
+                    options.JsonSerializerOptions.Converters.Add(new JsonDateTimeConverterExtension());
                 });
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -68,6 +72,20 @@ namespace Restaurang_luna
                         Type = "string",
                         Enum = names
                     };
+                });
+                c.MapType<DateTimeOffset>(() => new OpenApiSchema
+                {
+                    Type = "string",
+                    Format = "date-time",
+                    Example = new OpenApiString("2025-08-27 11:33")
+                });
+
+                c.MapType<DateTimeOffset?>(() => new OpenApiSchema
+                {
+                    Type = "string",
+                    Format = "date-time",
+                    Nullable = true,
+                    Example = new OpenApiString("2025-08-27 11:33")
                 });
             });
 

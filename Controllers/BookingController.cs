@@ -48,6 +48,7 @@ namespace Restaurang_luna.Controllers
 
         // POST api/<BookingController>
         [HttpPost]
+        [Consumes("application/json", "application/*+json")]
         public async Task<ActionResult<BookingListDto>> Create([FromBody] BookingRequestDto dto, CancellationToken ct)
         {
             var now = DateTimeOffset.UtcNow;
@@ -60,15 +61,29 @@ namespace Restaurang_luna.Controllers
         }
 
         // PUT api/<BookingController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        [HttpPatch("{id}")]
+        public async Task<IActionResult> Patch(Guid id, [FromBody] PatchBookingDto dto, CancellationToken ct)
         {
+            var success = await _bookingService.PatchBooking(id, dto, ct);
+
+            if (!success)
+                return BadRequest("Could not update booking");
+
+            var updated = await GetById(id, ct);
+            return Ok(updated);
+
         }
 
         // DELETE api/<BookingController>/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public async Task<ActionResult<bool>> Delete(Guid id, CancellationToken ct)
         {
+            var success = await _bookingService.DeleteBooking(id, ct);
+
+            if (!success)
+                return BadRequest("Could not delete booking");
+
+            return Ok(success);
         }
     }
 }

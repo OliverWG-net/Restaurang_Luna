@@ -3,7 +3,7 @@
     public class BookingRequestDto
     {
         public DateTimeOffset StartAt { get; init; }
-        public int Duration { get; init; } = 120;
+        public int Duration { get; private set; } = 120;
         public int GuestAmount { get; init; }
 
         public int TableId { get; init; }

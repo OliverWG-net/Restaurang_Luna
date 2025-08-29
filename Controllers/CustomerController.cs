@@ -67,8 +67,7 @@ namespace Restaurang_luna.Controllers
         public async Task<ActionResult<bool>> Delete(Guid id, CancellationToken ct)
         {
             var success = await _customerService.DeleteCustomer(id, ct);
-            if (success == false)
-
+            if (!success)
                 return NotFound("Table not found");
 
             return Ok(success);

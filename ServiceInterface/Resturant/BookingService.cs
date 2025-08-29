@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Restaurang_luna.Data;
 using Restaurang_luna.DTOs.Booking.Other;
 using Restaurang_luna.DTOs.Booking.Request;
+using Restaurang_luna.DTOs.Customer;
 using Restaurang_luna.Extensions;
 using Restaurang_luna.Extensions.Mappers;
 using Restaurang_luna.Models;
@@ -45,11 +46,6 @@ namespace Restaurang_luna.ServiceInterface.Resturant
         }
         public async Task<BookingListDto?> CreateBooking(BookingRequestDto dto, DateTimeOffset now, CancellationToken ct)
         {
-            if (dto.Duration <= 0)
-                throw new ArgumentOutOfRangeException(nameof(dto.Duration));
-
-            if (dto.GuestAmount <= 0)
-                throw new ArgumentOutOfRangeException(nameof(dto.Duration));
 
             if (!await IsTableFree(dto.TableId, dto.StartAt, dto.Duration, ct))
                 throw new InvalidOperationException("Table is not avalable at the current time");
@@ -100,6 +96,33 @@ namespace Restaurang_luna.ServiceInterface.Resturant
                 .FirstOrDefaultAsync(ct);
 
             return result;
+        }
+        public async Task<bool> PatchBooking(Guid id, PatchBookingDto dto, CancellationToken ct)
+        {
+            var booking = await _context.Bookings
+                .FirstOrDefaultAsync(b => b.BookingId == id);
+            if (booking == null)
+                return false;
+
+            var changedFields = booking.PatchFrom(dto);
+
+            if (changedFields.Count > 0)
+                await _context.SaveChangesAsync(ct);
+
+            return true;
+        }
+        public async Task<bool> DeleteBooking(Guid id, CancellationToken ct)
+        {
+            var booking = await _context.Bookings
+                .FirstOrDefaultAsync(b => b.BookingId == id);
+
+            if (booking == null)
+                return false;
+
+            _context.Bookings.Remove(booking);
+            await _context.SaveChangesAsync(ct);
+
+            return true;
         }
         private async Task<bool> IsTableFree(int tableId, DateTimeOffset startAt, int duration, CancellationToken ct)
         {
