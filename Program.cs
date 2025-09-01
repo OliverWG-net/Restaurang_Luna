@@ -10,6 +10,7 @@ using System.Text.Json;
 using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
 using Microsoft.JSInterop;
+using Restaurang_luna.Extensions.Mappers;
 
 namespace Restaurang_luna
 {
@@ -96,6 +97,10 @@ namespace Restaurang_luna
             builder.Services.AddScoped<ITableService, TableService>();
             builder.Services.AddScoped<ICustomerService, CustomerService>();
             builder.Services.AddScoped<IBookingService, BookingService>();
+            builder.Services.AddScoped<IAvailabilityService, AvailabilityService>();
+            builder.Services.AddSingleton<IBookingPolicy, BookingPolicy>();
+            builder.Services.AddSingleton<IMapper<Booking, BookingListDto>, BookingMapper>();
+            builder.Services.AddScoped<IMenuService, MenuService>();
             builder.Services.AddHttpContextAccessor();
 
             var app = builder.Build();

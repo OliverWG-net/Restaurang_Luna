@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Restaurang_luna.Data;
 using Restaurang_luna.DTOs.Booking.Other;
 using Restaurang_luna.DTOs.Booking.Request;
@@ -7,16 +8,21 @@ using Restaurang_luna.DTOs.Customer;
 using Restaurang_luna.Extensions;
 using Restaurang_luna.Extensions.Mappers;
 using Restaurang_luna.Models;
+using System.Data.Common;
 
 namespace Restaurang_luna.ServiceInterface.Resturant
 {
     public class BookingService : IBookingService
     {
         private readonly LunaDbContext _context;
+        private readonly IBookingPolicy _policy;
+        private readonly IMapper<Booking, BookingListDto> _mapper;
 
-        public BookingService(LunaDbContext context)
+        public BookingService(LunaDbContext context, IBookingPolicy policy, IMapper<Booking, BookingListDto> mapper)
         {
             _context = context;
+            _policy = policy;
+            _mapper = mapper;
         }
 
         public async Task<IReadOnlyList<BookingListDto>> GetListBucket(BookingBucket bucket, DateTimeOffset now, CancellationToken ct)
@@ -30,11 +36,11 @@ namespace Restaurang_luna.ServiceInterface.Resturant
 
         public async Task<BookingListDto> GetBookingById(Guid id, DateTimeOffset now, CancellationToken ct)
         {
-            var mapper = new BookingMapper(now);
+            var mapper = new BookingMapper();
 
             var booking = await _context.Bookings
                 .Where(b => b.BookingId == id)
-                .AutoMap(mapper)
+                .AutoMap(mapper, now)
                 .FirstOrDefaultAsync(ct);
 
             if (booking == null)
@@ -44,23 +50,18 @@ namespace Restaurang_luna.ServiceInterface.Resturant
 
 
         }
-        public async Task<BookingListDto?> CreateBooking(BookingRequestDto dto, DateTimeOffset now, CancellationToken ct)
+        public async Task<BookingListDto?> CreateBooking(BookingRequestDto dto, CancellationToken ct)
         {
 
-            if (!await IsTableFree(dto.TableId, dto.StartAt, dto.Duration, ct))
-                throw new InvalidOperationException("Table is not avalable at the current time");
+            if (!_policy.IsValidStart(dto.StartAt))
+                throw new InvalidOperationException("Start time must be 16:00, 18:00 or 20:00");
 
-            var tableExist = await _context.Tables
-                .AnyAsync(t => t.TableId == dto.TableId, ct);
 
-            if (!tableExist)
-                throw new InvalidOperationException("Table not found");
 
             var booking = new Booking
             {
                 BookingId = Guid.NewGuid(),
                 StartAt = dto.StartAt,
-                Duration = dto.Duration,
                 GuestAmount = dto.GuestAmount,
                 TableId_FK = dto.TableId,
                 CustomerId_FK = dto.CustomerId,
@@ -86,16 +87,28 @@ namespace Restaurang_luna.ServiceInterface.Resturant
             booking.LockSnapshot();
 
             _context.Bookings.Add(booking);
-            await _context.SaveChangesAsync(ct);
 
-            var mapper = new BookingMapper(now);
+            try
+            { 
+                await _context.SaveChangesAsync(ct);
+
+                await _context.Entry(booking).ReloadAsync(ct);
+            }
+            catch (DbException ex)
+            {
+                return null;
+            }
+
+            var now = DateTimeOffset.UtcNow;
+            var mapper = new BookingMapper();
 
             var result = await _context.Bookings
+                .AsNoTracking()
                 .Where(b => b.BookingId == booking.BookingId)
-                .Select(mapper.Map)
+                .AutoMap(mapper, now)
                 .FirstOrDefaultAsync(ct);
 
-            return result;
+            return (result);
         }
         public async Task<bool> PatchBooking(Guid id, PatchBookingDto dto, CancellationToken ct)
         {
@@ -124,8 +137,10 @@ namespace Restaurang_luna.ServiceInterface.Resturant
 
             return true;
         }
+        private const int SlotMinutes = 120;
         private async Task<bool> IsTableFree(int tableId, DateTimeOffset startAt, int duration, CancellationToken ct)
         {
+            
             var endAt = startAt.AddMinutes(duration);
 
             return !await _context.Bookings
@@ -133,7 +148,7 @@ namespace Restaurang_luna.ServiceInterface.Resturant
                 b.TableId_FK == tableId &&
                 b.Status != BookingStatus.Cancelled &&
                 b.StartAt < endAt &&
-                startAt < b.StartAt.AddMinutes(b.Duration), ct);
+                startAt < b.StartAt.AddMinutes(SlotMinutes), ct);
         }
     }
 }

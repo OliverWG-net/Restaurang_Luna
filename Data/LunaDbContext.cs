@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Restaurang_luna.Models;
 
 namespace Restaurang_luna.Data
@@ -31,6 +32,23 @@ namespace Restaurang_luna.Data
             modelBuilder.Entity<Booking>()
             .Property(b => b.RowVersion)
             .IsRowVersion();
+
+
+            modelBuilder.Entity<Booking>()
+            .Property(b => b.Status)
+            .HasConversion<string>();
+
+            modelBuilder.Entity<Booking>()
+            .Property<bool>("IsActive")
+            .HasColumnName("IsActive")
+            .ValueGeneratedOnAddOrUpdate()
+            .Metadata.SetAfterSaveBehavior(PropertySaveBehavior.Ignore);
+
+            modelBuilder.Entity<Booking>()
+                .HasIndex("TableId_FK", nameof(Booking.StartAt))
+                .HasDatabaseName("UX_Bookings_TableId_StartAt_Active")
+                .IsUnique()
+                .HasFilter("[IsActive] = 1");
 
             modelBuilder.Entity<Table>().HasData(
              new Table { TableId = 1, TableNr = "T1", Capacity = 2 },

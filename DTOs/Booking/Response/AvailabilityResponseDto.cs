@@ -2,9 +2,9 @@
 {
     public class AvailabilityResponseDto
     {
-        public DateTimeOffset RequestStart { get; set; }
-        public int DurationMinutes { get; set; }
-        public int Guest { get; set; }
+        public DateTimeOffset RequestedStart { get; set; }
+        public int DurationMinutes { get; set; } = 120;
+        public int Guests { get; set; }
         public List<AvailabilityResponseDto> Suggestions = new();
     }
 }

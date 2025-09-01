@@ -9,7 +9,7 @@ namespace Restaurang_luna.ServiceInterface.Resturant
     {
         Task<IReadOnlyList<BookingListDto>> GetListBucket(BookingBucket bucket, DateTimeOffset now, CancellationToken ct);
         Task<BookingListDto> GetBookingById(Guid id, DateTimeOffset now, CancellationToken ct);
-        Task<BookingListDto?> CreateBooking(BookingRequestDto dto, DateTimeOffset now, CancellationToken ct);
+        Task<BookingListDto?> CreateBooking(BookingRequestDto dto, CancellationToken ct);
         Task<bool> PatchBooking(Guid id, PatchBookingDto dto, CancellationToken ct);
         Task<bool> DeleteBooking(Guid id, CancellationToken ct);
     }

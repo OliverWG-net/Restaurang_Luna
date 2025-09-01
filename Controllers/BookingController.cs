@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.SqlServer.Query.Internal;
+using Restaurang_luna.DTOs.Booking.AvailabilityDto;
 using Restaurang_luna.DTOs.Booking.Other;
 using Restaurang_luna.DTOs.Booking.Request;
 using Restaurang_luna.Models;
@@ -13,10 +16,23 @@ namespace Restaurang_luna.Controllers
     public class BookingController : ControllerBase
     {
         private readonly IBookingService _bookingService;
+        private readonly IAvailabilityService _availabilityService;
 
-        public BookingController(IBookingService bookingService)
+        public BookingController(IBookingService bookingService, IAvailabilityService availabilityService)
         {
             _bookingService = bookingService;
+            _availabilityService = availabilityService;
+        }
+        [Authorize]
+        [HttpGet("availability/{year:int}/{month:int}/{day:int}")]
+        public async Task<ActionResult<DayAvailabilityDto>> Availability(int year, int month, int day, [FromQuery] int guests, CancellationToken ct)
+        {
+            var date = new DateOnly(year, month, day);
+            var offset = TimeZoneInfo.FindSystemTimeZoneById("Europe/Stockholm")
+                                       .GetUtcOffset(new DateTime(year, month, day));
+            var dto = await _availabilityService.GetAvailability(date, guests, offset, ct);
+
+            return Ok(dto);
         }
         // GET: api/<BookingController>
         [HttpGet]
@@ -47,12 +63,13 @@ namespace Restaurang_luna.Controllers
         }
 
         // POST api/<BookingController>
+        [Authorize]
         [HttpPost]
         [Consumes("application/json", "application/*+json")]
         public async Task<ActionResult<BookingListDto>> Create([FromBody] BookingRequestDto dto, CancellationToken ct)
         {
             var now = DateTimeOffset.UtcNow;
-            var booking = await _bookingService.CreateBooking(dto, now, ct);
+            var booking = await _bookingService.CreateBooking(dto, ct);
 
             if (booking is null)
                 return BadRequest();
@@ -61,6 +78,7 @@ namespace Restaurang_luna.Controllers
         }
 
         // PUT api/<BookingController>/5
+        [Authorize]
         [HttpPatch("{id}")]
         public async Task<IActionResult> Patch(Guid id, [FromBody] PatchBookingDto dto, CancellationToken ct)
         {
@@ -75,6 +93,7 @@ namespace Restaurang_luna.Controllers
         }
 
         // DELETE api/<BookingController>/5
+        [Authorize]
         [HttpDelete("{id}")]
         public async Task<ActionResult<bool>> Delete(Guid id, CancellationToken ct)
         {

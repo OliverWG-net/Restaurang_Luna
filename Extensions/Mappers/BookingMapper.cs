@@ -1,4 +1,5 @@
-﻿using Restaurang_luna.DTOs.Booking.Other;
+﻿using Microsoft.IdentityModel.Tokens;
+using Restaurang_luna.DTOs.Booking.Other;
 using Restaurang_luna.Models;
 using System.Linq.Expressions;
 
@@ -6,20 +7,21 @@ namespace Restaurang_luna.Extensions.Mappers
 {
     public class BookingMapper : IMapper<Booking, BookingListDto>
     {
-        private readonly DateTimeOffset _now;
 
-        public BookingMapper(DateTimeOffset now)
+
+        public BookingMapper()
         {
-            _now = now;
         }
+        private const int SlotMinutes = 120;
 
-        public Expression<Func<Booking, BookingListDto>> Map => b => new BookingListDto
+        public Expression<Func<Booking, BookingListDto>> Projection(DateTimeOffset now) => b => new BookingListDto
         {
+            
             //maps properites
             BookingId = b.BookingId,
             StartAt = b.StartAt,
-            EndAt = b.StartAt.AddMinutes(b.Duration),
-            Duration = b.Duration,
+            EndAt = b.StartAt.AddMinutes(SlotMinutes),
+            Duration = SlotMinutes,
             GuestAmount = b.GuestAmount,
             TableId = b.TableId_FK,
             TableNr = b.Table.TableNr,
@@ -28,9 +30,9 @@ namespace Restaurang_luna.Extensions.Mappers
             SnapshotPhone = b.SnapshotPhone,
             SnapshotEmail = b.SnapshotEmail,
             Bucket =
-                    (b.EndAt <= _now || b.Status == BookingStatus.Completed || b.Status == BookingStatus.Cancelled)
+                    (b.StartAt.AddMinutes(SlotMinutes) <= now || b.Status == BookingStatus.Completed || b.Status == BookingStatus.Cancelled)
                         ? BookingBucket.Previous : ((b.Status == BookingStatus.Confirmed || b.Status == BookingStatus.CheckedIn || b.Status == BookingStatus.NoShow)
-                       && b.StartAt <= _now && _now < b.EndAt) ? BookingBucket.Current : BookingBucket.Future
+                       && b.StartAt <= now && now < b.StartAt.AddMinutes(SlotMinutes)) ? BookingBucket.Current : BookingBucket.Future
         };
     }
 }

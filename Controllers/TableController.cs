@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Restaurang_luna.DTOs.Table;
 using Restaurang_luna.ServiceInterface.Resturant;
 
@@ -41,6 +42,7 @@ namespace Restaurang_luna.Controllers
         }
 
         // POST api/<TableController>
+        [Authorize]
         [HttpPost]
         public async Task<ActionResult<TableDto>> Post([FromBody] TableDto dto, CancellationToken ct)
         {
@@ -51,7 +53,7 @@ namespace Restaurang_luna.Controllers
 
             return Ok($"A new table with table nr:{newTable.TableNr} with capcity of {newTable.Capacity}!");
         }
-
+        [Authorize]
         [HttpPatch("{id}")]
         public async Task<ActionResult<Dictionary<string, object>>> Patch(int id, [FromBody] TablePatchDto dto, CancellationToken ct)
         {
@@ -63,6 +65,7 @@ namespace Restaurang_luna.Controllers
         }
 
         // DELETE api/<TableController>/5
+        [Authorize]
         [HttpDelete("{id}")]
         public async Task<ActionResult<bool>> Delete(int id, CancellationToken ct)
         {

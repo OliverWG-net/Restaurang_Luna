@@ -16,6 +16,7 @@ namespace Restaurang_luna.Models
         public Guid BookingId { get; set; }
 
         public DateTimeOffset StartAt { get; set; }
+        [NotMapped]
         public int Duration { get; set; } = 120;
         public DateTimeOffset EndAt => StartAt.AddMinutes(Duration);
 

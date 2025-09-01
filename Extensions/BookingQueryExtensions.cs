@@ -6,32 +6,32 @@ namespace Restaurang_luna.Extensions
 {
     public static class BookingQueryExtensions
     {
+        const int SlotMinutes = 120;
         public static IQueryable<Booking> WhereBucket(this IQueryable<Booking> source, BookingBucket bucket, DateTimeOffset now)
         {
             return bucket switch
             {
                 //standard query depending on bucket
                 BookingBucket.Previous => source.Where(b =>
-                (b.StartAt.AddMinutes(b.Duration) <= now) ||
-                b.Status == BookingStatus.Completed ||
-                b.Status == BookingStatus.Cancelled),
+               b.StartAt.AddMinutes(SlotMinutes) <= now ||
+               b.Status == BookingStatus.Completed ||
+               b.Status == BookingStatus.Cancelled),
 
                 BookingBucket.Current => source.Where(b =>
-                (b.Status == BookingStatus.Confirmed ||
-                b.Status == BookingStatus.CheckedIn ||
-                b.Status == BookingStatus.NoShow) &&
-                b.StartAt <= now &&
-                now < b.StartAt.AddMinutes(b.Duration)),
+                    (b.Status == BookingStatus.Confirmed ||
+                     b.Status == BookingStatus.CheckedIn ||
+                     b.Status == BookingStatus.NoShow) &&
+                    b.StartAt <= now &&
+                    now < b.StartAt.AddMinutes(SlotMinutes)),
 
                 BookingBucket.Future => source.Where(b =>
-                b.StartAt > now &&
-                b.Status != BookingStatus.Cancelled),
-
-                BookingBucket.All => source,
+                    b.StartAt > now &&
+                    b.Status != BookingStatus.Cancelled),
 
                 _ => source
             };
         }
+        
         public static IOrderedQueryable<Booking> OrderBucket(this IQueryable<Booking> source, BookingBucket bucket)
         {
             return bucket switch
@@ -46,13 +46,15 @@ namespace Restaurang_luna.Extensions
         }
         public static IQueryable<BookingListDto> SelectListDto(this IQueryable<Booking> source, BookingBucket bucket, DateTimeOffset now)
         {
+            const int SlotMinutesLocal = 120;
+
             return source.Select(b => new BookingListDto
             {
                 //List reuturn view
                 BookingId = b.BookingId,
                 StartAt = b.StartAt,
-                EndAt = b.StartAt.AddMinutes(b.Duration),
-                Duration = b.Duration,
+                EndAt = b.StartAt.AddMinutes(SlotMinutesLocal),
+                Duration = SlotMinutesLocal,
                 GuestAmount = b.GuestAmount,
                 TableId = b.TableId_FK,
                 TableNr = b.Table.TableNr,
@@ -61,9 +63,10 @@ namespace Restaurang_luna.Extensions
                 SnapshotPhone = b.SnapshotPhone,
                 SnapshotEmail = b.SnapshotEmail,
                 Bucket =
-                    (b.EndAt <= now || b.Status == BookingStatus.Completed || b.Status == BookingStatus.Cancelled)
-                        ? BookingBucket.Previous : ((b.Status == BookingStatus.Confirmed || b.Status == BookingStatus.CheckedIn || b.Status == BookingStatus.NoShow)
-                       && b.StartAt <= now && now < b.EndAt) ? BookingBucket.Current : BookingBucket.Future
+                    (b.StartAt.AddMinutes(SlotMinutesLocal) <= now || b.Status == BookingStatus.Completed || b.Status == BookingStatus.Cancelled)
+                    ? BookingBucket.Previous
+                    : ((b.Status == BookingStatus.Confirmed || b.Status == BookingStatus.CheckedIn || b.Status == BookingStatus.NoShow) &&
+                       b.StartAt <= now && now < b.StartAt.AddMinutes(SlotMinutesLocal)) ? BookingBucket.Current : BookingBucket.Future
             });
         }
     }
