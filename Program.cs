@@ -37,10 +37,7 @@ namespace Restaurang_luna
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
             });
             var cfg = builder.Configuration;
-            Console.WriteLine($"ENV: {builder.Environment.EnvironmentName}");
-            Console.WriteLine($"Has JwtConfig:Key? {(!string.IsNullOrWhiteSpace(cfg["JwtConfig:Key"]))}");
-            Console.WriteLine($"Issuer: {cfg["JwtConfig:Issuer"]}");
-            Console.WriteLine($"Audience: {cfg["JwtConfig:Audience"]}");
+
             builder.Services.AddJwtAuthentication(builder.Configuration);
 
 
@@ -78,7 +75,7 @@ namespace Restaurang_luna
                 {
                     Type = "string",
                     Format = "date-time",
-                    Example = new OpenApiString("2025-08-27 11:33")
+                    Example = new OpenApiString("2025-08-27 16:00")
                 });
 
                 c.MapType<DateTimeOffset?>(() => new OpenApiSchema
@@ -86,7 +83,7 @@ namespace Restaurang_luna
                     Type = "string",
                     Format = "date-time",
                     Nullable = true,
-                    Example = new OpenApiString("2025-08-27 11:33")
+                    Example = new OpenApiString("2025-08-27 16:00")
                 });
             });
 
@@ -102,6 +99,15 @@ namespace Restaurang_luna
             builder.Services.AddSingleton<IMapper<Booking, BookingListDto>, BookingMapper>();
             builder.Services.AddScoped<IMenuService, MenuService>();
             builder.Services.AddHttpContextAccessor();
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowReactApp", policy =>
+                {
+                    policy.WithOrigins("http://localhost:5173/")
+                    .AllowAnyHeader()
+                    .AllowAnyMethod();
+                });
+            });
 
             var app = builder.Build();
 
@@ -112,7 +118,10 @@ namespace Restaurang_luna
                 app.UseSwaggerUI();
             }
 
+
             app.UseHttpsRedirection();
+
+            app.UseCors("AllowReactApp");
 
             app.UseAuthentication();
             app.UseAuthorization();
