@@ -32,7 +32,7 @@ namespace Restaurang_luna.ServiceInterface.Resturant
                 Price = menuItem.Price,
                 Description = menuItem.Description,
                 IsPopular = menuItem.IsPopular,
-                PicutreUrl = menuItem.PicutreUrl
+                PictureUrl = menuItem.PictureUrl
             };
 
             return menuDto;
@@ -53,7 +53,7 @@ namespace Restaurang_luna.ServiceInterface.Resturant
                 Price = m.Price,
                 Description = m.Description,
                 IsPopular = m.IsPopular,
-                PicutreUrl = m.PicutreUrl
+                PictureUrl = m.PictureUrl
             }).ToList();
 
             return (menuDto);
@@ -73,7 +73,7 @@ namespace Restaurang_luna.ServiceInterface.Resturant
                 Price = m.Price,
                 Description = m.Description,
                 IsPopular = m.IsPopular,
-                PicutreUrl = m.PicutreUrl
+                PictureUrl = m.PictureUrl
             }).ToList();
 
             return (menuDto);
@@ -92,7 +92,7 @@ namespace Restaurang_luna.ServiceInterface.Resturant
                 Price = dto.Price,
                 Description = dto.Description,
                 IsPopular = dto.IsPopular,
-                PicutreUrl = dto.PicutreUrl
+                PictureUrl = dto.PictureUrl
             };
             _context.Menus.Add(newItem);
             await _context.SaveChangesAsync(ct);
@@ -103,7 +103,7 @@ namespace Restaurang_luna.ServiceInterface.Resturant
                 Price = dto.Price,
                 Description = dto.Description,
                 IsPopular = dto.IsPopular,
-                PicutreUrl = dto.PicutreUrl
+                PictureUrl = dto.PictureUrl
             };
         }
         public async Task<bool> PatchMenu(int id, PatchMenuDto dto, CancellationToken ct)
