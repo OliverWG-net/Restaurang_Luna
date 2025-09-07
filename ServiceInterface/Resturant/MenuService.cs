@@ -27,6 +27,7 @@ namespace Restaurang_luna.ServiceInterface.Resturant
 
             var menuDto = new MenuDto
             {
+                MenuId = menuItem.MenuId,
                 MenuItem = menuItem.MenuItem,
                 Price = menuItem.Price,
                 Description = menuItem.Description,
@@ -47,6 +48,7 @@ namespace Restaurang_luna.ServiceInterface.Resturant
 
             var menuDto = menuList.Select(m => new MenuDto
             {
+                MenuId = m.MenuId,
                 MenuItem = m.MenuItem,
                 Price = m.Price,
                 Description = m.Description,

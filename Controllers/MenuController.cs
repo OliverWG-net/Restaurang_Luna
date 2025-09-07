@@ -17,7 +17,6 @@ namespace Restaurang_luna.Controllers
             _menuService = menuService;
         }
         // GET: api/<MenuController>
-        [Authorize]
         [HttpGet]
         public async Task<ActionResult<List<MenuDto>>> GetMenu(CancellationToken ct)
         {
@@ -65,7 +64,7 @@ namespace Restaurang_luna.Controllers
         }
 
         // PUT api/<MenuController>/5
-        [Authorize]
+
         [HttpPatch("{id}")]
         public async Task<ActionResult<MenuDto>> Patch(int id, [FromBody] PatchMenuDto dto, CancellationToken ct)
         {
