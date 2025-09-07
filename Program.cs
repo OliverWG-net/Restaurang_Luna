@@ -1,16 +1,14 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Any;
+using Microsoft.OpenApi.Models;
 using Restaurang_luna.Data;
+using Restaurang_luna.DTOs.Booking.Other;
 using Restaurang_luna.Extensions;
+using Restaurang_luna.Extensions.Mappers;
 using Restaurang_luna.Models;
 using Restaurang_luna.ServiceInterface.Auth;
 using Restaurang_luna.ServiceInterface.Customers;
 using Restaurang_luna.ServiceInterface.Resturant;
-using Restaurang_luna.DTOs.Booking.Other;
-using System.Text.Json;
-using Microsoft.OpenApi.Any;
-using Microsoft.OpenApi.Models;
-using Microsoft.JSInterop;
-using Restaurang_luna.Extensions.Mappers;
 
 namespace Restaurang_luna
 {
@@ -46,7 +44,7 @@ namespace Restaurang_luna
             builder.Services.AddControllers()
                 .AddJsonOptions(options =>
                 {
-                    
+
                     options.JsonSerializerOptions.Converters.Add(
                         new System.Text.Json.Serialization.JsonStringEnumConverter(
                         System.Text.Json.JsonNamingPolicy.CamelCase,

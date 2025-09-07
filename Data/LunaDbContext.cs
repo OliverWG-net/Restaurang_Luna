@@ -66,7 +66,7 @@ namespace Restaurang_luna.Data
                 Price = 120,
                 Description = "Classic pasta with creamy egg sauce, pancetta, and parmesan.",
                 IsPopular = true,
-                PicutreUrl = "https://vasterbottensost.com/wp-content/uploads/2025/03/carbonara.jpg"
+                PictureUrl = "https://vasterbottensost.com/wp-content/uploads/2025/03/carbonara.jpg"
             },
                 new Menu
                 {
@@ -75,7 +75,7 @@ namespace Restaurang_luna.Data
                     Price = 100,
                     Description = "Spicy tomato sauce with garlic, chili, and fresh parsley.",
                     IsPopular = false,
-                    PicutreUrl = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS-3mx7DCimLIn1_B7a5JbY8SvzPT4jpahzeQ&s"
+                    PictureUrl = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS-3mx7DCimLIn1_B7a5JbY8SvzPT4jpahzeQ&s"
                 },
                 new Menu
                 {
@@ -84,7 +84,7 @@ namespace Restaurang_luna.Data
                     Price = 140,
                     Description = "Rich butter and parmesan sauce with silky fettuccine pasta.",
                     IsPopular = true,
-                    PicutreUrl = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQpfJYxux157r0GogK-XhDhxjnTvmQYVgaPUg&s"
+                    PictureUrl = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQpfJYxux157r0GogK-XhDhxjnTvmQYVgaPUg&s"
                 },
                 new Menu
                 {
@@ -93,7 +93,7 @@ namespace Restaurang_luna.Data
                     Price = 160,
                     Description = "Layered pasta with beef ragù, béchamel, and parmesan.",
                     IsPopular = true,
-                    PicutreUrl = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRkkjn3cMbzsNByc3-WkOob9H0c3ioINWgE5g&s"
+                    PictureUrl = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRkkjn3cMbzsNByc3-WkOob9H0c3ioINWgE5g&s"
                 },
                 new Menu
                 {
@@ -102,7 +102,7 @@ namespace Restaurang_luna.Data
                     Price = 110,
                     Description = "Wood-fired pizza with tomato, mozzarella, and fresh basil.",
                     IsPopular = true,
-                    PicutreUrl = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSpBDIHxbtMe_C5SJhO2AujarCzMCKXQpO6Qw&s"
+                    PictureUrl = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSpBDIHxbtMe_C5SJhO2AujarCzMCKXQpO6Qw&s"
                 },
                 new Menu
                 {
@@ -111,7 +111,7 @@ namespace Restaurang_luna.Data
                     Price = 75,
                     Description = "Full-bodied Italian red wine, served by the glass.",
                     IsPopular = false,
-                    PicutreUrl = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTLeLeVxyjldu8sSuMuPdL3EgzMT8Y68uWECg&s"
+                    PictureUrl = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTLeLeVxyjldu8sSuMuPdL3EgzMT8Y68uWECg&s"
                 },
                 new Menu
                 {
@@ -120,7 +120,7 @@ namespace Restaurang_luna.Data
                     Price = 75,
                     Description = "Crisp Italian white wine, served chilled by the glass.",
                     IsPopular = false,
-                    PicutreUrl = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSiRqs99I_sHPJ6eWHmEKrMYo66ZWYNLDNnqg&s"
+                    PictureUrl = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSiRqs99I_sHPJ6eWHmEKrMYo66ZWYNLDNnqg&s"
                 },
                 new Menu
                 {
@@ -129,7 +129,7 @@ namespace Restaurang_luna.Data
                     Price = 40,
                     Description = "Strong Italian coffee served in a small cup.",
                     IsPopular = true,
-                    PicutreUrl = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRqpOw-kv9-J1OzjJICx_KZEU-KhhLYfYKF1w&s"
+                    PictureUrl = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRqpOw-kv9-J1OzjJICx_KZEU-KhhLYfYKF1w&s"
                 },
                 new Menu
                 {
@@ -138,7 +138,7 @@ namespace Restaurang_luna.Data
                     Price = 90,
                     Description = "Classic Italian dessert with mascarpone and espresso.",
                     IsPopular = true,
-                    PicutreUrl = "https://staticcookist.akamaized.net/wp-content/uploads/sites/22/2024/09/THUMB-VIDEO-2_rev1-56.jpeg"
+                    PictureUrl = "https://staticcookist.akamaized.net/wp-content/uploads/sites/22/2024/09/THUMB-VIDEO-2_rev1-56.jpeg"
                 }
             );
 

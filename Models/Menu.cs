@@ -23,6 +23,6 @@ namespace Restaurang_luna.Models
         public bool IsPopular { get; set; }
 
         [Url]
-        public string? PicutreUrl { get; set; }
+        public string? PictureUrl { get; set; }
     }
 }

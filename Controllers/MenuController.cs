@@ -17,7 +17,6 @@ namespace Restaurang_luna.Controllers
             _menuService = menuService;
         }
         // GET: api/<MenuController>
-        [Authorize]
         [HttpGet]
         public async Task<ActionResult<List<MenuDto>>> GetMenu(CancellationToken ct)
         {
@@ -28,7 +27,7 @@ namespace Restaurang_luna.Controllers
 
             return Ok(menuList);
         }
-        [HttpGet("Popular")]
+        [HttpGet("popular")]
         public async Task<ActionResult<List<MenuDto>>> GetPopularMenu(CancellationToken ct)
         {
             var menuList = await _menuService.GetPopularMenu(ct);
