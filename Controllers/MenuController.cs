@@ -79,7 +79,6 @@ namespace Restaurang_luna.Controllers
         }
 
         // DELETE api/<MenuController>/5
-        [Authorize]
         [HttpDelete("{id}")]
         public async Task<ActionResult<bool>> Delete(int id, CancellationToken ct)  
         {
