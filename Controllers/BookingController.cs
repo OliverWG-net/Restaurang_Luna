@@ -36,16 +36,16 @@ namespace Restaurang_luna.Controllers
         }
         // GET: api/<BookingController>
         [HttpGet]
-        public async Task<ActionResult<IReadOnlyList<BookingListDto>>> Get([FromQuery] BookingBucket bucket = BookingBucket.Current, CancellationToken ct = default)
+        public async Task<ActionResult<IReadOnlyList<BookingListDto>>> Get([FromQuery] BookingBucket bucket, CancellationToken ct = default)
         {
             var now = DateTimeOffset.UtcNow;
 
-            var Bookings = await _bookingService.GetListBucket(bucket, now, ct);
+            var bookings = await _bookingService.GetListBucket(bucket, now, ct);
 
-            if (Bookings.Count == 0 || Bookings == null )
-                return NotFound("No bookings found");
+            if (bookings is null || bookings.Count == 0)
+                return Ok(Array.Empty<BookingListDto>());
 
-            return Ok(Bookings);
+            return Ok(bookings);
         }
 
         // GET api/<BookingController>/5

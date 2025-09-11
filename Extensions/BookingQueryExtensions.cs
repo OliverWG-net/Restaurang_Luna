@@ -1,5 +1,6 @@
 ﻿using Restaurang_luna.DTOs.Booking.Other;
 using Restaurang_luna.Models;
+using System.Net.Sockets;
 using System.Runtime.CompilerServices;
 
 namespace Restaurang_luna.Extensions
@@ -15,14 +16,15 @@ namespace Restaurang_luna.Extensions
                 BookingBucket.Previous => source.Where(b =>
                b.StartAt.AddMinutes(SlotMinutes) <= now ||
                b.Status == BookingStatus.Completed ||
-               b.Status == BookingStatus.Cancelled),
+               b.Status == BookingStatus.Cancelled ||
+               b.Status == BookingStatus.NoShow),
 
-                BookingBucket.Current => source.Where(b =>
-                    (b.Status == BookingStatus.Confirmed ||
-                     b.Status == BookingStatus.CheckedIn ||
-                     b.Status == BookingStatus.NoShow) &&
-                    b.StartAt <= now &&
-                    now < b.StartAt.AddMinutes(SlotMinutes)),
+                ////BookingBucket.Current => source.Where(b =>
+                ////    (b.Status == BookingStatus.Confirmed ||
+                ////     b.Status == BookingStatus.CheckedIn ||
+                ////     b.Status == BookingStatus.NoShow) &&
+                ////    b.StartAt <= now &&
+                ////    now < b.StartAt.AddMinutes(SlotMinutes)),
 
                 BookingBucket.Future => source.Where(b =>
                     b.StartAt > now &&
@@ -38,7 +40,7 @@ namespace Restaurang_luna.Extensions
             {
                 //standard ordering depending on bucket
                 BookingBucket.Previous => source.OrderByDescending(b => b.StartAt),
-                BookingBucket.Current => source.OrderBy(b => b.StartAt),
+                //BookingBucket.Current => source.OrderBy(b => b.StartAt),
                 BookingBucket.Future => source.OrderBy(b => b.StartAt),
 
                 _ => source.OrderBy(b => b.StartAt)
@@ -63,10 +65,12 @@ namespace Restaurang_luna.Extensions
                 SnapshotPhone = b.SnapshotPhone,
                 SnapshotEmail = b.SnapshotEmail,
                 Bucket =
-                    (b.StartAt.AddMinutes(SlotMinutesLocal) <= now || b.Status == BookingStatus.Completed || b.Status == BookingStatus.Cancelled)
+                 (b.StartAt.AddMinutes(SlotMinutes) <= now || b.Status == BookingStatus.Completed ||
+                  b.Status == BookingStatus.Cancelled ||
+                  b.Status == BookingStatus.NoShow)
                     ? BookingBucket.Previous
-                    : ((b.Status == BookingStatus.Confirmed || b.Status == BookingStatus.CheckedIn || b.Status == BookingStatus.NoShow) &&
-                       b.StartAt <= now && now < b.StartAt.AddMinutes(SlotMinutesLocal)) ? BookingBucket.Current : BookingBucket.Future
+                    : BookingBucket.Future
+
             });
         }
     }

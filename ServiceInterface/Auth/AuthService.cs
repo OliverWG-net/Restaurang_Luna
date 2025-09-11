@@ -85,5 +85,18 @@ namespace Restaurang_luna.ServiceInterface.Auth
                 ExpiresIn = (int)tokenExpiryTimestamp.Subtract(DateTime.UtcNow).TotalSeconds
             };
         }
+        public async Task Logout(CancellationToken ct = default)
+        {
+            var options = new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = true,
+                SameSite = SameSiteMode.Lax
+            };
+
+            //added options for when adding path and domain
+            _httpContext.HttpContext!.Response.Cookies.Delete("AuthToken", options);
+            await Task.CompletedTask;
+        }
     }
 }

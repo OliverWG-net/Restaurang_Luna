@@ -49,6 +49,12 @@ namespace Restaurang_luna.Controllers
 
             return Ok($"Welcome {LoginResponseDto.UserName}");
         }
+        [HttpPost("logout")]
+        public async Task<IActionResult> Logout(CancellationToken ct)
+        {
+            await _authService.Logout(ct);
+            return NoContent();
+        }
 
         // PUT api/<AuthController>/5
         [HttpPut("{id}")]

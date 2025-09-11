@@ -23,6 +23,7 @@ namespace Restaurang_luna.ServiceInterface.Resturant
 
             var tablesDto = tables.Select(t => new TableDto
             {
+                TableId = t.TableId,
                 TableNr = t.TableNr,
                 Capacity = t.Capacity
             }).ToList();

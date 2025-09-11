@@ -50,7 +50,7 @@ namespace Restaurang_luna
                         System.Text.Json.JsonNamingPolicy.CamelCase,
                          allowIntegerValues: false));
 
-                    options.JsonSerializerOptions.Converters.Add(new JsonDateTimeConverterExtension());
+                    //options.JsonSerializerOptions.Converters.Add(new JsonDateTimeConverterExtension());
                 });
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

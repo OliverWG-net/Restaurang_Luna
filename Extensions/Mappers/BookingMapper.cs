@@ -30,9 +30,8 @@ namespace Restaurang_luna.Extensions.Mappers
             SnapshotPhone = b.SnapshotPhone,
             SnapshotEmail = b.SnapshotEmail,
             Bucket =
-                    (b.StartAt.AddMinutes(SlotMinutes) <= now || b.Status == BookingStatus.Completed || b.Status == BookingStatus.Cancelled)
-                        ? BookingBucket.Previous : ((b.Status == BookingStatus.Confirmed || b.Status == BookingStatus.CheckedIn || b.Status == BookingStatus.NoShow)
-                       && b.StartAt <= now && now < b.StartAt.AddMinutes(SlotMinutes)) ? BookingBucket.Current : BookingBucket.Future
+                      (b.StartAt.AddMinutes(SlotMinutes) <= now || b.Status == BookingStatus.Completed ||
+                        b.Status == BookingStatus.Cancelled) ? BookingBucket.Previous : BookingBucket.Future
         };
     }
 }
