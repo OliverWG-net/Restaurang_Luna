@@ -24,9 +24,10 @@ namespace Restaurang_luna.ServiceInterface.Resturant
                 new DateTimeOffset(date.Year, date.Month, date.Day, 16,0,0, offset),
                 new DateTimeOffset(date.Year, date.Month, date.Day, 18,0,0, offset),
                 new DateTimeOffset(date.Year, date.Month, date.Day, 20,0,0, offset),
+                new DateTimeOffset(date.Year, date.Month, date.Day, 22,0,0, offset),
             };
 
-            //query a list of tables matching guest cpacity
+            //list of tables matching guest cpacity
             var tables = await _context.Tables
                 .Where(t => t.Capacity >= guests)
                 .Select(t => new { t.TableId, t.TableNr, t.Capacity })
@@ -71,7 +72,7 @@ namespace Restaurang_luna.ServiceInterface.Resturant
             }
             return result;
         }
-        // gammal function
+        //old function
         public static DateTimeOffset TruncateMinutes(DateTimeOffset dto, int roundedMinutes)
         {
             var minutes = (dto.Minute / roundedMinutes) * roundedMinutes;

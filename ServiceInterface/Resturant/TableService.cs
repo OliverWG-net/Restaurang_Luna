@@ -47,17 +47,19 @@ namespace Restaurang_luna.ServiceInterface.Resturant
             return tableDto;
         }
 
-        public async Task<TableDto> CreateTable(TableDto dto, CancellationToken ct)
+        public async Task<TableDto> CreateTable(CreateTableDto dto, CancellationToken ct)
         {
-            var existingTable = await _context.Tables
-                .FirstOrDefaultAsync(t => t.TableNr == dto.TableNr, ct);
+            var normalized = dto.TableNr?.Trim();
 
-            if (existingTable != null)
-                return null;
+            var existingTable = await _context.Tables
+                .AnyAsync(t => t.TableNr == normalized, ct);
+
+            if (existingTable)
+                throw new InvalidOperationException("Table number already exists.");
 
             var table = new Table
             {
-                TableNr = dto.TableNr,
+                TableNr = normalized,
                 Capacity = dto.Capacity
             };
 
@@ -70,20 +72,20 @@ namespace Restaurang_luna.ServiceInterface.Resturant
                 Capacity = table.Capacity
             };
         }
-        public async Task<Dictionary<string, object>> PatchTable(int id, TablePatchDto dto, CancellationToken ct)
+        public async Task<bool> PatchTable(int id, TablePatchDto dto, CancellationToken ct)
         {
             var table = await _context.Tables
                 .FirstOrDefaultAsync(t => t.TableId == id, ct);
 
             if (table == null)
-                return null;
+                return false;
 
-            var changedFields = _context.PatchFrom(dto);
+            var changedFields = table.PatchFrom(dto);
 
             if (changedFields.Count > 0)
                 await _context.SaveChangesAsync(ct);
 
-            return (changedFields);
+            return (true);
 
 
         }

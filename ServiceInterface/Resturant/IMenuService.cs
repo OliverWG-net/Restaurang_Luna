@@ -7,7 +7,7 @@ namespace Restaurang_luna.ServiceInterface.Resturant
         Task<MenuDto> GetById(int id, CancellationToken ct);
         Task<List<MenuDto>> GetMenu(CancellationToken ct);
         Task<List<MenuDto>> GetPopularMenu(CancellationToken ct);
-        Task<MenuDto> CreateMenuItem(MenuDto dto, CancellationToken ct);
+        Task<CreateMenuDto> CreateMenuItem(CreateMenuDto dto, CancellationToken ct);
         Task<bool> PatchMenu(int id, PatchMenuDto dto, CancellationToken ct);
         Task<bool> DeleteMenuItem(int id, CancellationToken ct);
     }

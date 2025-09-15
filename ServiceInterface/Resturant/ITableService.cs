@@ -6,8 +6,8 @@ namespace Restaurang_luna.ServiceInterface.Resturant
     {
         Task<List<TableDto>> GetTables(CancellationToken ct);
         Task<TableDto> GetTable(int Id, CancellationToken ct);
-        Task<TableDto> CreateTable(TableDto dto, CancellationToken ct);
-        Task<Dictionary<string, object>> PatchTable(int id, TablePatchDto dto, CancellationToken ct);
+        Task<TableDto> CreateTable(CreateTableDto dto, CancellationToken ct);
+        Task<bool> PatchTable(int id, TablePatchDto dto, CancellationToken ct);
         Task<bool> DeleteTable(int id, CancellationToken ct);
     }
 }

@@ -53,7 +53,7 @@ namespace Restaurang_luna.Controllers
         // POST api/<MenuController>
         [Authorize]
         [HttpPost]
-        public async Task<ActionResult<MenuDto>> Post([FromBody] MenuDto dto, CancellationToken ct)
+        public async Task<ActionResult<MenuDto>> Post([FromBody] CreateMenuDto dto, CancellationToken ct)
         {
             var newMenuItem = await _menuService.CreateMenuItem(dto, ct);
 

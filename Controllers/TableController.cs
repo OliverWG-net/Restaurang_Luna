@@ -44,7 +44,7 @@ namespace Restaurang_luna.Controllers
         // POST api/<TableController>
         [Authorize]
         [HttpPost]
-        public async Task<ActionResult<TableDto>> Post([FromBody] TableDto dto, CancellationToken ct)
+        public async Task<ActionResult<TableDto>> Post([FromBody] CreateTableDto dto, CancellationToken ct)
         {
             var newTable = await _tableService.CreateTable(dto, ct);
 
@@ -53,15 +53,16 @@ namespace Restaurang_luna.Controllers
 
             return Ok($"A new table with table nr:{newTable.TableNr} with capcity of {newTable.Capacity}!");
         }
-        [Authorize]
         [HttpPatch("{id}")]
-        public async Task<ActionResult<Dictionary<string, object>>> Patch(int id, [FromBody] TablePatchDto dto, CancellationToken ct)
+        public async Task<ActionResult<TableDto>> Patch(int id, [FromBody] TablePatchDto dto, CancellationToken ct)
         {
-            var updatedTable = await _tableService.PatchTable(id, dto, ct);
-            if (updatedTable == null)
-                return NotFound("Table was not able to be updated");
+            var succsess = await _tableService.PatchTable(id, dto, ct);
+            if (!succsess)
+                return BadRequest("Could not update menu item");
 
-            return Ok(updatedTable);
+            var updated = await Get(id, ct);
+
+            return Ok(updated.Value);
         }
 
         // DELETE api/<TableController>/5

@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Restaurang_luna.Models
 {
-    [Index(nameof(TableNr))]
+    [Index(nameof(TableNr), IsUnique = true)]
     public class Table
     {
         [Key]

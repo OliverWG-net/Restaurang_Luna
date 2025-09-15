@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Restaurang_luna.Data;
@@ -116,6 +117,14 @@ namespace Restaurang_luna.ServiceInterface.Resturant
                 .FirstOrDefaultAsync(b => b.BookingId == id);
             if (booking == null)
                 return false;
+            var table = await _context.Tables
+          .FirstOrDefaultAsync(t => t.TableId == dto.TableId_FK, ct);
+
+            if (table == null)
+                throw new ArgumentException("Table not found");
+
+            if (dto.GuestAmount > table.Capacity)
+                throw new ArgumentException($"Table {table.TableNr} capacity ({table.Capacity}) exceeded by guest count ({dto.GuestAmount})");
 
             var changedFields = booking.PatchFrom(dto);
 

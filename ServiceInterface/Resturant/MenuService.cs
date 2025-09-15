@@ -78,7 +78,7 @@ namespace Restaurang_luna.ServiceInterface.Resturant
 
             return (menuDto);
         }
-        public async Task<MenuDto> CreateMenuItem(MenuDto dto, CancellationToken ct)
+        public async Task<CreateMenuDto> CreateMenuItem(CreateMenuDto dto, CancellationToken ct)
         {
             var item = await _context.Menus
                 .AnyAsync(m => m.MenuItem == dto.MenuItem);
@@ -97,7 +97,7 @@ namespace Restaurang_luna.ServiceInterface.Resturant
             _context.Menus.Add(newItem);
             await _context.SaveChangesAsync(ct);
 
-            return new MenuDto
+            return new CreateMenuDto
             {
                 MenuItem = dto.MenuItem,
                 Price = dto.Price,
