@@ -53,6 +53,7 @@ namespace Restaurang_luna.Controllers
 
             return Ok($"A new table with table nr:{newTable.TableNr} with capcity of {newTable.Capacity}!");
         }
+        [Authorize]
         [HttpPatch("{id}")]
         public async Task<ActionResult<TableDto>> Patch(int id, [FromBody] TablePatchDto dto, CancellationToken ct)
         {

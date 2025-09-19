@@ -64,7 +64,7 @@ namespace Restaurang_luna.Controllers
         }
 
         // PUT api/<MenuController>/5
-
+        [Authorize]
         [HttpPatch("{id}")]
         public async Task<ActionResult<MenuDto>> Patch(int id, [FromBody] PatchMenuDto dto, CancellationToken ct)
         {
@@ -79,6 +79,7 @@ namespace Restaurang_luna.Controllers
         }
 
         // DELETE api/<MenuController>/5
+        [Authorize]
         [HttpDelete("{id}")]
         public async Task<ActionResult<bool>> Delete(int id, CancellationToken ct)  
         {
