@@ -23,7 +23,7 @@ namespace Restaurang_luna.Controllers
             _bookingService = bookingService;
             _availabilityService = availabilityService;
         }
-        [Authorize]
+        //[Authorize]
         [HttpGet("availability/{year:int}/{month:int}/{day:int}")]
         public async Task<ActionResult<DayAvailabilityDto>> Availability(int year, int month, int day, [FromQuery] int guests, CancellationToken ct)
         {
@@ -64,7 +64,7 @@ namespace Restaurang_luna.Controllers
 
         // POST api/<BookingController>
         [Authorize]
-        [HttpPost]
+        //[HttpPost]
         [Consumes("application/json", "application/*+json")]
         public async Task<ActionResult<BookingListDto>> Create([FromBody] BookingRequestDto dto, CancellationToken ct)
         {
